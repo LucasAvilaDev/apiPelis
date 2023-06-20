@@ -81,6 +81,15 @@ namespace Api.Migrations
                     { 4, 3, "A team of thieves invades people's dreams", "Christopher Nolan", 148, "Inception", 2010 },
                     { 5, 3, "An innocent man finds hope in prison", "Frank Darabont", 142, "The Shawshank Redemption", 1994 }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "Email", "Name", "Password", "Type" },
+                values: new object[,]
+                {
+                    { 1, "john@example.com", "John Doe", "password123", 0 },
+                    { 2, "admin@example.com", "Admin User", "adminpass", 1 }
+                });
         }
 
         /// <inheritdoc />

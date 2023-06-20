@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230620012614_InitialMigration")]
+    [Migration("20230620124837_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -170,6 +170,24 @@ namespace Api.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Email = "john@example.com",
+                            Name = "John Doe",
+                            Password = "password123",
+                            Type = 0
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Email = "admin@example.com",
+                            Name = "Admin User",
+                            Password = "adminpass",
+                            Type = 1
+                        });
                 });
 #pragma warning restore 612, 618
         }

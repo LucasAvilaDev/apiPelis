@@ -3,20 +3,38 @@ using apiMovies.Models;
 
 namespace ApiMovies.Data
 {
-    public class ApplicationDbContext : DbContext 
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-
         }
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<User> Users { get; set; }
 
-                protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            modelBuilder.Entity<User>().HasData(
+        new User
+        {
+            UserId = 1,
+            Name = "John Doe",
+            Email = "john@example.com",
+            Password = "password123",
+            Type = UserType.Client
+        },
+        new User
+        {
+            UserId = 2,
+            Name = "Admin User",
+            Email = "admin@example.com",
+            Password = "adminpass",
+            Type = UserType.Administrator
+        }
+    );
+
+
             modelBuilder.Entity<Category>().HasData(
                 new Category { CategoryId = 1, Name = "Drama" },
                 new Category { CategoryId = 2, Name = "Comedy" },
@@ -77,6 +95,6 @@ namespace ApiMovies.Data
             );
         }
 
-        
+
     }
 }
