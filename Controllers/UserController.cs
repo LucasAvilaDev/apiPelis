@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ApiMovies.Data;
+using apiMovies.Data;
 using apiMovies.Models;
 
 namespace Api.Controllers
@@ -20,6 +20,27 @@ namespace Api.Controllers
         {
             _context = context;
         }
+
+
+        [HttpPost("user/addfav")]
+        public ActionResult AddMovieToUser(MovieUser movieUser)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == movieUser.UserId);
+
+            var movie = _context.Movies.FirstOrDefault(m => m.MovieId == movieUser.MovieId);
+
+            if (user == null || movie == null)
+            {
+                return NotFound(); // Devuelve un código de respuesta 404 si el usuario no se encuentra
+            }
+
+            _context.MovieUsers.Add(movieUser);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+
 
         // GET: api/User/5
         [HttpGet("{id}")]

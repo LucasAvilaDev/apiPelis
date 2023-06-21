@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ApiMovies.Data;
+using apiMovies.Data;
 using apiMovies.Models;
 
 namespace Api.Controllers
@@ -20,6 +20,8 @@ namespace Api.Controllers
         {
             _context = context;
         }
+
+        
 
         // GET: api/Movies
         [HttpGet]

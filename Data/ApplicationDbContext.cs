@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using apiMovies.Models;
 
-namespace ApiMovies.Data
+namespace apiMovies.Data
 {
     public class ApplicationDbContext : DbContext
     {
@@ -12,6 +12,8 @@ namespace ApiMovies.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<MovieUser> MovieUsers { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
