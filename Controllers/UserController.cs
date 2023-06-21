@@ -105,6 +105,8 @@ namespace Api.Controllers
             return NoContent();
         }
 
+        // Agregando linea
+
         private bool UserExists(int id)
         {
             return (_context.Users?.Any(e => e.UserId == id)).GetValueOrDefault();
