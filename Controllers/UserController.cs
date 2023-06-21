@@ -10,7 +10,7 @@ using apiMovies.Models;
 
 namespace Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -19,17 +19,6 @@ namespace Api.Controllers
         public UserController(ApplicationDbContext context)
         {
             _context = context;
-        }
-
-        // GET: api/User
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        {
-          if (_context.Users == null)
-          {
-              return NotFound();
-          }
-            return await _context.Users.ToListAsync();
         }
 
         // GET: api/User/5
@@ -81,9 +70,9 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        // POST: api/User
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        // POST: api/User/registro
+        
+        [HttpPost("registro")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
           if (_context.Users == null)

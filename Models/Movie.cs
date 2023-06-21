@@ -18,6 +18,11 @@ namespace apiMovies.Models
 
         public int Duration { get; set; }
 
+        //public string image { get; set; }
+
+        [ForeignKey("categoryId")]
         public int CategoryId { get; set; }
+        
+        public Category Category{ get; set; }
     }
 }

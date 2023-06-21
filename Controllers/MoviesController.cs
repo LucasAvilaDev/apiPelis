@@ -10,7 +10,7 @@ using apiMovies.Models;
 
 namespace Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/movies")]
     [ApiController]
     public class MoviesController : ControllerBase
     {

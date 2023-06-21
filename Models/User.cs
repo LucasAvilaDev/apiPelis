@@ -14,6 +14,8 @@ namespace apiMovies.Models
 
         public string Password { get; set; }
 
+        //public string image { get; set; }
+
         public UserType Type { get; set; }
     }
 
