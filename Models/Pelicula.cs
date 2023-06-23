@@ -22,8 +22,6 @@ public class Pelicula
 
     [ForeignKey("id_categoria")]
     public int id_categoria { get; set; }
-
-    public Categoria Categoria { get; set; }
 }
 
 }
