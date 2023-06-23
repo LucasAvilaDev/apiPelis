@@ -6,23 +6,22 @@ namespace apiMovies.Models
 public class Pelicula
 {
     [Key]
-    public int PeliculaId { get; set; }
+    public int id_pelicula { get; set; }
 
-    public string Titulo { get; set; }
+    public string titulo { get; set; }
 
-    public string Descripcion { get; set; }
+    public string descripcion { get; set; }
 
-    public string Director { get; set; }
+    public string director { get; set; }
 
-    public int Anio { get; set; }
+    public int year { get; set; }
 
-    public int Duracion { get; set; }
+    public int duracion { get; set; }
 
-    public string Imagen { get; set; }
+    public string fotoPelicula { get; set; }
 
-
-    [ForeignKey("CategoriaId")]
-    public int CategoriaId { get; set; }
+    [ForeignKey("id_categoria")]
+    public int id_categoria { get; set; }
 
     public Categoria Categoria { get; set; }
 }

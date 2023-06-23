@@ -9,20 +9,19 @@ namespace apiMovies.Data
         {
         }
 
-        public DbSet<Categoria> Categorias { get; set; }
-        public DbSet<Pelicula> Peliculas { get; set; }
-        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Categoria> Categoria { get; set; }
+        public DbSet<Pelicula> Pelicula { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
         public DbSet<PeliculaUsuario> PeliculaUsuario { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             DataSeeder.SeedCategories(modelBuilder);
-            DataSeeder.SeedMovies(modelBuilder);
             DataSeeder.SeedUsers(modelBuilder);
-
+            //DataSeeder.SeedMovies(modelBuilder);
+            
+            modelBuilder.Entity<PeliculaUsuario>()
+            .HasKey(pu => new { pu.id_pelicula, pu.id_usuario });
         }
-
-
     }
 }

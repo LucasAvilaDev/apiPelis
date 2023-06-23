@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using apiMovies.Data;
 using apiMovies.Models;
+using Newtonsoft.Json.Linq;
+
 
 namespace Api.Controllers
 {
@@ -21,17 +23,50 @@ namespace Api.Controllers
             _context = context;
         }
 
+        // POST: api/usuario/login
+        [HttpPost("login")]
+        public Usuario Login(LoginRequest data)
+        {
+            var correoElectronico = data.correo_electronico;
+            var contrasena = data.password;
+            var usuario = _context.Usuario.FirstOrDefault(u => u.correo_electronico == correoElectronico);
 
-        [HttpPost("usuario/addfav")]
+            if (usuario != null)
+            {
+                if (usuario.password == contrasena)
+                {
+                    return usuario;
+                }
+            }
+            return null;
+        }
+
+        // POST: api/usuario/registro
+
+        [HttpPost("registro")]
+        public async Task<ActionResult<Usuario>> PostUser(Usuario usuario)
+        {
+            if (_context.Usuario == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Usuario'  is null.");
+            }
+            _context.Usuario.Add(usuario);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetUser", new { id = usuario.id_usuario }, usuario);
+        }
+
+        // POST: api/usuario/favorita
+        [HttpPost("usuario/favorita")]
         public ActionResult AddMovieToUser(PeliculaUsuario peliculaUsuario)
         {
-            var usuario = _context.Usuarios.FirstOrDefault(u => u.UsuarioId == peliculaUsuario.UsuarioId);
+            var usuario = _context.Usuario.FirstOrDefault(u => u.id_usuario == peliculaUsuario.id_usuario);
 
-            var pelicula = _context.Peliculas.FirstOrDefault(m => m.PeliculaId == peliculaUsuario.PeliculaId);
+            var pelicula = _context.Pelicula.FirstOrDefault(m => m.id_pelicula == peliculaUsuario.id_pelicula);
 
             if (usuario == null || pelicula == null)
             {
-                return NotFound(); // Devuelve un código de respuesta 404 si el usuario no se encuentra
+                return NotFound();
             }
 
             _context.PeliculaUsuario.Add(peliculaUsuario);
@@ -46,11 +81,11 @@ namespace Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> GetUser(int id)
         {
-          if (_context.Usuarios == null)
-          {
-              return NotFound();
-          }
-            var usuario = await _context.Usuarios.FindAsync(id);
+            if (_context.Usuario == null)
+            {
+                return NotFound();
+            }
+            var usuario = await _context.Usuario.FindAsync(id);
 
             if (usuario == null)
             {
@@ -65,7 +100,7 @@ namespace Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, Usuario usuario)
         {
-            if (id != usuario.UsuarioId)
+            if (id != usuario.id_usuario)
             {
                 return BadRequest();
             }
@@ -91,36 +126,22 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        // POST: api/Usuario/registro
-        
-        [HttpPost("registro")]
-        public async Task<ActionResult<Usuario>> PostUser(Usuario usuario)
-        {
-          if (_context.Usuarios == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Usuarios'  is null.");
-          }
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = usuario.UsuarioId }, usuario);
-        }
 
         // DELETE: api/Usuario/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            if (_context.Usuarios == null)
+            if (_context.Usuario == null)
             {
                 return NotFound();
             }
-            var usuario = await _context.Usuarios.FindAsync(id);
+            var usuario = await _context.Usuario.FindAsync(id);
             if (usuario == null)
             {
                 return NotFound();
             }
 
-            _context.Usuarios.Remove(usuario);
+            _context.Usuario.Remove(usuario);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -130,7 +151,15 @@ namespace Api.Controllers
 
         private bool UserExists(int id)
         {
-            return (_context.Usuarios?.Any(e => e.UsuarioId == id)).GetValueOrDefault();
+            return (_context.Usuario?.Any(e => e.id_usuario == id)).GetValueOrDefault();
         }
+
+    }
+
+
+    public class LoginRequest
+    {
+        public string correo_electronico { get; set; }
+        public string password { get; set; }
     }
 }

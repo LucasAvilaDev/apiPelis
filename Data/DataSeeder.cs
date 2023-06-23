@@ -17,23 +17,24 @@ namespace apiMovies.Data
             modelBuilder.Entity<Categoria>().HasData(categorias);
         }
 
-    
+        /*
         public static void SeedMovies(ModelBuilder modelBuilder)
         {
-            var moviesJsonPath = Path.Combine(Directory.GetCurrentDirectory(), "peliculas.json");
-            var moviesJson = File.ReadAllText(moviesJsonPath);
-            var movies = JsonSerializer.Deserialize<List<Pelicula>>(moviesJson);
+            var peliculasJsonPath = Path.Combine(Directory.GetCurrentDirectory(), "peliculas.json");
+            var peliculasJson = File.ReadAllText(peliculasJsonPath);
+            var peliculas = JsonSerializer.Deserialize<List<Pelicula>>(peliculasJson);
 
-            modelBuilder.Entity<Pelicula>().HasData(movies);
+            modelBuilder.Entity<Pelicula>().HasData(peliculas);
         }
-
+    */
+        
         public static void SeedUsers(ModelBuilder modelBuilder)
         {
             var usuariosJsonPath = Path.Combine(Directory.GetCurrentDirectory(), "usuarios.json");
             var usuariosJson = File.ReadAllText(usuariosJsonPath);
-            var usuarios = JsonSerializer.Deserialize<List<Pelicula>>(usuariosJson);
+            var usuarios = JsonSerializer.Deserialize<List<Usuario>>(usuariosJson);
 
-            modelBuilder.Entity<Pelicula>().HasData(usuarios);
+            modelBuilder.Entity<Usuario>().HasData(usuarios);
         }
 
     }

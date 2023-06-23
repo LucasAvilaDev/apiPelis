@@ -827,3 +827,5 @@ C:\Users\Lucas\Desktop\apiMovies\bin\Debug\net7.0\runtimes\win-x64\native\gssapi
 C:\Users\Lucas\Desktop\apiMovies\bin\Debug\net7.0\runtimes\win-x64\native\k5sprt64.dll
 C:\Users\Lucas\Desktop\apiMovies\bin\Debug\net7.0\runtimes\win-x64\native\krb5_64.dll
 C:\Users\Lucas\Desktop\apiMovies\bin\Debug\net7.0\runtimes\win-x64\native\krbcc64.dll
+C:\Users\Lucas\Desktop\apiMovies\bin\Debug\net7.0\categorias.json
+C:\Users\Lucas\Desktop\apiMovies\bin\Debug\net7.0\usuarios.json

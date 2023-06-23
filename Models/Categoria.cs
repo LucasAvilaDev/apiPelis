@@ -6,11 +6,9 @@ namespace apiMovies.Models
 public class Categoria
 {
     [Key]
-    public int CategoriaId { get; set; }
+    public int id_categoria { get; set; }
 
-    public string Nombre { get; set; }
-
-    public ICollection<Pelicula> Peliculas { get; set; }
+    public string nombre { get; set; }
 }
 
 }

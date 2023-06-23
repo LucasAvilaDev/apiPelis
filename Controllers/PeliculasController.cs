@@ -10,7 +10,7 @@ using apiMovies.Models;
 
 namespace Api.Controllers
 {
-    [Route("api/movies")]
+    [Route("api/pelicula")]
     [ApiController]
     public class PeliculaController : ControllerBase
     {
@@ -23,26 +23,26 @@ namespace Api.Controllers
 
         
 
-        // GET: api/Peliculas
+        // GET: api/pelicula
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pelicula>>> GetMovies()
         {
-          if (_context.Peliculas == null)
+          if (_context.Pelicula == null)
           {
               return NotFound();
           }
-            return await _context.Peliculas.ToListAsync();
+            return await _context.Pelicula.ToListAsync();
         }
 
-        // GET: api/Peliculas/5
+        // GET: api/pelicula/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Pelicula>> GetMovie(int id)
         {
-          if (_context.Peliculas == null)
+          if (_context.Pelicula == null)
           {
               return NotFound();
           }
-            var pelicula = await _context.Peliculas.FindAsync(id);
+            var pelicula = await _context.Pelicula.FindAsync(id);
 
             if (pelicula == null)
             {
@@ -52,12 +52,12 @@ namespace Api.Controllers
             return pelicula;
         }
 
-        // PUT: api/Peliculas/5
+        // PUT: api/pelicula/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, Pelicula pelicula)
         {
-            if (id != pelicula.PeliculaId)
+            if (id != pelicula.id_pelicula)
             {
                 return BadRequest();
             }
@@ -83,36 +83,36 @@ namespace Api.Controllers
             return NoContent();
         }
 
-        // POST: api/Peliculas
+        // POST: api/pelicula
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Pelicula>> PostMovie(Pelicula pelicula)
         {
-          if (_context.Peliculas == null)
+          if (_context.Pelicula == null)
           {
-              return Problem("Entity set 'ApplicationDbContext.Peliculas'  is null.");
+              return Problem("Entity set 'ApplicationDbContext.Pelicula'  is null.");
           }
-            _context.Peliculas.Add(pelicula);
+            _context.Pelicula.Add(pelicula);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMovie", new { id = pelicula.PeliculaId }, pelicula);
+            return CreatedAtAction("GetMovie", new { id = pelicula.id_pelicula }, pelicula);
         }
 
-        // DELETE: api/Peliculas/5
+        // DELETE: api/pelicula/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
         {
-            if (_context.Peliculas == null)
+            if (_context.Pelicula == null)
             {
                 return NotFound();
             }
-            var pelicula = await _context.Peliculas.FindAsync(id);
+            var pelicula = await _context.Pelicula.FindAsync(id);
             if (pelicula == null)
             {
                 return NotFound();
             }
 
-            _context.Peliculas.Remove(pelicula);
+            _context.Pelicula.Remove(pelicula);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -120,7 +120,7 @@ namespace Api.Controllers
 
         private bool MovieExists(int id)
         {
-            return (_context.Peliculas?.Any(e => e.PeliculaId == id)).GetValueOrDefault();
+            return (_context.Pelicula?.Any(e => e.id_pelicula == id)).GetValueOrDefault();
         }
     }
 }
