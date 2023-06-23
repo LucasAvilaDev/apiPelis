@@ -57,7 +57,7 @@ namespace Api.Controllers
         }
 
         // POST: api/usuario/favorita
-        [HttpPost("usuario/favorita")]
+        [HttpPost("favorita")]
         public ActionResult AddMovieToUser(PeliculaUsuario peliculaUsuario)
         {
             var usuario = _context.Usuario.FirstOrDefault(u => u.id_usuario == peliculaUsuario.id_usuario);
