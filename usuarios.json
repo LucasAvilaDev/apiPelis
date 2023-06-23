@@ -1,0 +1,16 @@
+[
+    {
+        "UserId": 0,
+        "Nombre": "Juan",
+        "Email": "juan@example.com",
+        "Password": "secreto123",
+        "Tipo": 1
+    },
+    {
+        "UserId": 1,
+        "Nombre": "María",
+        "Email": "maria@example.com",
+        "Password": "contraseña456",
+        "Tipo": 0
+    }
+]

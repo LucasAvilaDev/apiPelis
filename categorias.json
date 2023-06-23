@@ -1,0 +1,42 @@
+[
+	{
+		"CategoriaId": 0,
+		"Nombre": "Acción"
+	},
+	{
+		"CategoriaId": 1,
+		"Nombre": "Animación"
+	},
+	{
+		"CategoriaId": 2,
+		"Nombre": "Crimen"
+	},
+	{
+		"CategoriaId": 3,
+		"Nombre": "Familia"
+	},
+	{
+		"CategoriaId": 4,
+		"Nombre": "Misterio"
+	},
+	{
+		"CategoriaId": 5,
+		"Nombre": "Suspenso"
+	},
+	{
+		"CategoriaId": 6,
+		"Nombre": "Terror"
+	},
+	{
+		"CategoriaId": 7,
+		"Nombre": "Romance"
+	},
+	{
+		"CategoriaId": 8,
+		"Nombre": "Drama"
+	},
+	{
+		"CategoriaId": 9,
+		"Nombre": "Ciencia Ficción"
+	}
+]

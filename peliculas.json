@@ -1,0 +1,29 @@
+[
+  {
+      "PeliculaId": 0,
+      "Titulo": "Avengers: Endgame",
+      "Descripcion": "Los Vengadores se unen para luchar contra Thanos y restaurar el universo.",
+      "Director": "Anthony Russo, Joe Russo",
+      "Anio": 2019,
+      "Duracion": 181,
+      "CategoriaId": 0
+  },
+  {
+      "PeliculaId": 1,
+      "Titulo": "El Padrino",
+      "Descripcion": "Un mafioso intenta mantener el control de su imperio criminal mientras protege a su familia.",
+      "Director": "Francis Ford Coppola",
+      "Anio": 1972,
+      "Duracion": 175,
+      "CategoriaId": 2
+  },
+  {
+      "PeliculaId": 2,
+      "Titulo": "Toy Story",
+      "Descripcion": "Un grupo de juguetes cobra vida cuando los humanos no están presentes.",
+      "Director": "John Lasseter",
+      "Anio": 1995,
+      "Duracion": 81,
+      "CategoriaId": 1
+  }
+]
