@@ -153,9 +153,7 @@ namespace Api.Controllers
         {
             return (_context.Usuario?.Any(e => e.id_usuario == id)).GetValueOrDefault();
         }
-
     }
-
 
     public class LoginRequest
     {
