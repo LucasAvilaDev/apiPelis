@@ -18,7 +18,6 @@ namespace apiMovies.Data
         {
             //DataSeeder.SeedCategories(modelBuilder);
             //DataSeeder.SeedUsers(modelBuilder);
-            //DataSeeder.SeedMovies(modelBuilder);
             
             modelBuilder.Entity<PeliculaUsuario>()
             .HasKey(pu => new { pu.id_pelicula, pu.id_usuario });
