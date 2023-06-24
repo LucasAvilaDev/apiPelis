@@ -1,3 +1,4 @@
+        /*
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -17,7 +18,6 @@ namespace apiMovies.Data
             modelBuilder.Entity<Categoria>().HasData(categorias);
         }
 
-        /*
         public static void SeedMovies(ModelBuilder modelBuilder)
         {
             var peliculasJsonPath = Path.Combine(Directory.GetCurrentDirectory(), "peliculas.json");
@@ -26,7 +26,6 @@ namespace apiMovies.Data
 
             modelBuilder.Entity<Pelicula>().HasData(peliculas);
         }
-    */
         
         public static void SeedUsers(ModelBuilder modelBuilder)
         {
@@ -39,3 +38,5 @@ namespace apiMovies.Data
 
     }
 }
+
+    */

@@ -16,8 +16,8 @@ namespace apiMovies.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            DataSeeder.SeedCategories(modelBuilder);
-            DataSeeder.SeedUsers(modelBuilder);
+            //DataSeeder.SeedCategories(modelBuilder);
+            //DataSeeder.SeedUsers(modelBuilder);
             //DataSeeder.SeedMovies(modelBuilder);
             
             modelBuilder.Entity<PeliculaUsuario>()

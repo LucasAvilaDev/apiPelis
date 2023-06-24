@@ -56,26 +56,6 @@ namespace Api.Controllers
             return CreatedAtAction("GetUser", new { id = usuario.id_usuario }, usuario);
         }
 
-        // POST: api/usuario/favorita
-        [HttpPost("favorita")]
-        public ActionResult AddMovieToUser(PeliculaUsuario peliculaUsuario)
-        {
-            var usuario = _context.Usuario.FirstOrDefault(u => u.id_usuario == peliculaUsuario.id_usuario);
-
-            var pelicula = _context.Pelicula.FirstOrDefault(m => m.id_pelicula == peliculaUsuario.id_pelicula);
-
-            if (usuario == null || pelicula == null)
-            {
-                return NotFound();
-            }
-
-            _context.PeliculaUsuario.Add(peliculaUsuario);
-            _context.SaveChanges();
-
-            return Ok();
-        }
-
-
 
         // GET: api/usuario/5
         [HttpGet("{id}")]
@@ -153,6 +133,71 @@ namespace Api.Controllers
         {
             return (_context.Usuario?.Any(e => e.id_usuario == id)).GetValueOrDefault();
         }
+
+
+        // POST: api/usuario/favorita
+        [HttpPost("favorita")]
+        public ActionResult AgregarFavorita(PeliculaUsuario peliculaUsuario)
+        {
+            var usuario = _context.Usuario.FirstOrDefault(u => u.id_usuario == peliculaUsuario.id_usuario);
+            var pelicula = _context.Pelicula.FirstOrDefault(m => m.id_pelicula == peliculaUsuario.id_pelicula);
+
+            if (usuario == null || pelicula == null)
+            {
+                return NotFound();
+            }
+
+            // Verificar si la relación ya existe
+            var existente = _context.PeliculaUsuario
+                .FirstOrDefault(pu => pu.id_usuario == peliculaUsuario.id_usuario && pu.id_pelicula == peliculaUsuario.id_pelicula);
+
+            if (existente != null)
+            {
+                return Conflict(); // Relación ya existente, retornar código de respuesta 409 Conflict
+            }
+
+            _context.PeliculaUsuario.Add(peliculaUsuario);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+        // DELETE: api/usuario/favorita
+
+        [HttpDelete("favorita")]
+        public ActionResult EliminarFavorita(int idPelicula, int idUsuario)
+        {
+            var peliculaUsuario = _context.PeliculaUsuario
+                .FirstOrDefault(pu => pu.id_pelicula == idPelicula && pu.id_usuario == idUsuario);
+
+            if (peliculaUsuario == null)
+            {
+                return NotFound();
+            }
+
+            _context.PeliculaUsuario.Remove(peliculaUsuario);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+        // GET: api/usuario/favorita
+
+        [HttpGet("favorita")]
+        public ActionResult<List<PeliculaUsuario>> ObtenerFavoritas(int idUsuario)
+        {
+            var peliculasFavoritas = _context.PeliculaUsuario
+                .Where(pu => pu.id_usuario == idUsuario)
+                .ToList();
+
+            if (peliculasFavoritas.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return peliculasFavoritas;
+        }
+
     }
 
     public class LoginRequest
