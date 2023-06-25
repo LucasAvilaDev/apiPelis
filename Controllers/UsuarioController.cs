@@ -134,69 +134,99 @@ namespace Api.Controllers
             return (_context.Usuario?.Any(e => e.id_usuario == id)).GetValueOrDefault();
         }
 
-
         // POST: api/usuario/favorita
         [HttpPost("favorita")]
-        public ActionResult AgregarFavorita(PeliculaUsuario peliculaUsuario)
+        public async Task<ActionResult> AgregarFavorita(FavoritaDto favoritaDto)
         {
-            var usuario = _context.Usuario.FirstOrDefault(u => u.id_usuario == peliculaUsuario.id_usuario);
-            var pelicula = _context.Pelicula.FirstOrDefault(m => m.id_pelicula == peliculaUsuario.id_pelicula);
-
-            if (usuario == null || pelicula == null)
+            // Validar los datos
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            // Verificar si la relación ya existe
-            var existente = _context.PeliculaUsuario
-                .FirstOrDefault(pu => pu.id_usuario == peliculaUsuario.id_usuario && pu.id_pelicula == peliculaUsuario.id_pelicula);
-
-            if (existente != null)
+            try
             {
-                return Conflict(); // Relación ya existente, retornar código de respuesta 409 Conflict
+                // Verificar si la película ya está marcada como favorita por el usuario
+                bool favoritaExistente = await _context.PeliculaUsuario
+                    .AnyAsync(pu => pu.id_pelicula == favoritaDto.id_pelicula && pu.id_usuario == favoritaDto.id_usuario);
+
+                if (favoritaExistente)
+                {
+                    return Conflict("La película ya está marcada como favorita por el usuario.");
+                }
+
+                // Crear una nueva instancia de PeliculaUsuario con los datos del DTO
+                PeliculaUsuario peliculaUsuario = new PeliculaUsuario
+                {
+                    id_pelicula = favoritaDto.id_pelicula,
+                    id_usuario = favoritaDto.id_usuario
+                };
+
+                // Agregar la película favorita a la base de datos
+                _context.PeliculaUsuario.Add(peliculaUsuario);
+                await _context.SaveChangesAsync();
+
+                return Ok();
             }
-
-            _context.PeliculaUsuario.Add(peliculaUsuario);
-            _context.SaveChanges();
-
-            return Ok();
+            catch
+            {
+                return StatusCode(500, "Error al agregar la película favorita.");
+            }
         }
 
         // DELETE: api/usuario/favorita
-
         [HttpDelete("favorita")]
-        public ActionResult EliminarFavorita(int idPelicula, int idUsuario)
+        public async Task<ActionResult> EliminarFavorita(FavoritaDto favoritaDto)
         {
-            var peliculaUsuario = _context.PeliculaUsuario
-                .FirstOrDefault(pu => pu.id_pelicula == idPelicula && pu.id_usuario == idUsuario);
-
-            if (peliculaUsuario == null)
+            // Validar los datos
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            _context.PeliculaUsuario.Remove(peliculaUsuario);
-            _context.SaveChanges();
+            try
+            {
+                // Buscar la película favorita en la base de datos
+                PeliculaUsuario peliculaUsuario = await _context.PeliculaUsuario.FindAsync(favoritaDto.id_pelicula, favoritaDto.id_usuario);
 
-            return Ok();
+                if (peliculaUsuario == null)
+                {
+                    return NotFound("La película favorita no existe.");
+                }
+
+                // Eliminar la película favorita de la base de datos
+                _context.PeliculaUsuario.Remove(peliculaUsuario);
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch
+            {
+                return StatusCode(500, "Error al eliminar la película favorita.");
+            }
         }
 
         // GET: api/usuario/favorita
-
         [HttpGet("favorita")]
-        public ActionResult<List<PeliculaUsuario>> ObtenerFavoritas(int idUsuario)
+        public async Task<ActionResult<List<Pelicula>>> GetFavoritas(int id_usuario)
         {
-            var peliculasFavoritas = _context.PeliculaUsuario
-                .Where(pu => pu.id_usuario == idUsuario)
-                .ToList();
-
-            if (peliculasFavoritas.Count == 0)
+            try
             {
-                return NotFound();
-            }
+                // Obtener las películas favoritas del usuario de la base de datos
+                List<Pelicula> favoritas = await _context.PeliculaUsuario
+                    .Where(pu => pu.id_usuario == id_usuario)
+                    .Select(pu => pu.Pelicula)
+                    .ToListAsync();
 
-            return peliculasFavoritas;
+                return Ok(favoritas);
+            }
+            catch
+            {
+                return StatusCode(500, "Error al obtener las películas favoritas.");
+            }
         }
+
+
 
     }
 
@@ -204,5 +234,12 @@ namespace Api.Controllers
     {
         public string correo_electronico { get; set; }
         public string password { get; set; }
+    }
+
+
+    public class FavoritaDto
+    {
+        public int id_pelicula { get; set; }
+        public int id_usuario { get; set; }
     }
 }

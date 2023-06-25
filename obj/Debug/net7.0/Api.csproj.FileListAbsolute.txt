@@ -292,3 +292,4 @@ C:\Users\Lucas\Desktop\apiMovies\obj\Debug\net7.0\refint\Api.dll
 C:\Users\Lucas\Desktop\apiMovies\obj\Debug\net7.0\Api.pdb
 C:\Users\Lucas\Desktop\apiMovies\obj\Debug\net7.0\Api.genruntimeconfig.cache
 C:\Users\Lucas\Desktop\apiMovies\obj\Debug\net7.0\ref\Api.dll
+C:\Users\Lucas\Desktop\apiMovies\bin\Debug\net7.0\peliculas.json

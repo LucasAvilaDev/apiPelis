@@ -1,0 +1,32 @@
+[
+  {
+      "id_pelicula": 1,
+      "titulo": "El Padrino",
+      "descripcion": "Un mafioso intenta mantener el control de su imperio criminal mientras protege a su familia.",
+      "director": "Francis Ford Coppola",
+      "year": 1972,
+      "duracion": 175,
+      "id_categoria": 2,
+      "fotoPelicula": "string"
+  },
+  {
+      "id_pelicula": 2,
+      "titulo": "Toy Story",
+      "descripcion": "Un grupo de juguetes cobra vida cuando los humanos no están presentes.",
+      "director": "John Lasseter",
+      "year": 1995,
+      "duracion": 81,
+      "id_categoria": 1,
+      "fotoPelicula": "string"
+  },
+  {
+    "id_pelicula": 3,
+    "titulo": "Avengers: Endgame",
+    "descripcion": "Los Vengadores se unen para luchar contra Thanos y restaurar el universo.",
+    "director": "Anthony Russo, Joe Russo",
+    "year": 2019,
+    "duracion": 181,
+    "id_categoria": 3,
+    "fotoPelicula": "string"
+}
+]

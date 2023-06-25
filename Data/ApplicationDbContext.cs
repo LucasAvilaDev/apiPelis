@@ -16,11 +16,19 @@ namespace apiMovies.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //DataSeeder.SeedCategories(modelBuilder);
-            //DataSeeder.SeedUsers(modelBuilder);
+            DataSeeder.SeedCategories(modelBuilder);
+            DataSeeder.SeedUsers(modelBuilder);
+            DataSeeder.SeedMovies(modelBuilder);
+
             
             modelBuilder.Entity<PeliculaUsuario>()
             .HasKey(pu => new { pu.id_pelicula, pu.id_usuario });
+
+            modelBuilder.Entity<PeliculaUsuario>()
+            .HasOne(pu => pu.Pelicula)
+            .WithMany()
+            .HasForeignKey(pu => pu.id_pelicula)
+            .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

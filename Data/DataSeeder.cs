@@ -1,4 +1,4 @@
-        /*
+
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -38,5 +38,3 @@ namespace apiMovies.Data
 
     }
 }
-
-    */
