@@ -206,15 +206,15 @@ namespace Api.Controllers
             }
         }
 
-        // GET: api/usuario/favorita
-        [HttpGet("favorita")]
-        public async Task<ActionResult<List<Pelicula>>> GetFavoritas(int id_usuario)
+        // GET: api/usuario/{id}/favorita
+         [HttpGet("{id}/favorita")]
+        public async Task<ActionResult<List<Pelicula>>> GetFavoritas(int id)
         {
             try
             {
                 // Obtener las películas favoritas del usuario de la base de datos
                 List<Pelicula> favoritas = await _context.PeliculaUsuario
-                    .Where(pu => pu.id_usuario == id_usuario)
+                    .Where(pu => pu.id_usuario == id)
                     .Select(pu => pu.Pelicula)
                     .ToListAsync();
 
