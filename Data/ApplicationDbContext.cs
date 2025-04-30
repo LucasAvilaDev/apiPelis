@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using apiMovies.Models;
+using apiPelis.Models;
+using apiPelis.Data;
 
-namespace apiMovies.Data
+namespace apiPelis.Data
 {
     public class ApplicationDbContext : DbContext
     {

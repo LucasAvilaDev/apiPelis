@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using apiMovies.Data;
-using apiMovies.Models;
+using apiPelis.Data;
+using apiPelis.Models;
 
 namespace Api.Controllers
 {

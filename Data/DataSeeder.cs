@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using apiMovies.Models;
+using apiPelis.Models;
 
-namespace apiMovies.Data
+namespace apiPelis.Data
 {
     public static class DataSeeder
     {

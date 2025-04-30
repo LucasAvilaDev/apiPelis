@@ -1,0 +1,9 @@
+[
+    {   "id_usuario": 1,
+        "nombre": "admin",
+        "correo_electronico": "admin@gmail.com",
+        "fotoUsuario":"string",
+        "password": "admin",
+        "tipo": "admin"
+    }
+]

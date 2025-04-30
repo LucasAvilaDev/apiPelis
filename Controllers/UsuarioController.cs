@@ -5,15 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using apiMovies.Data;
-using apiMovies.Models;
+using apiPelis.Data;
+using apiPelis.Models;
+using apiPelis.DTOs;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Api.Controllers
 {
-    [Route("api/usuario")]
+    [Authorize]
     [ApiController]
+    [Route("api/usuario")]
     public class UsuariosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -22,40 +25,6 @@ namespace Api.Controllers
         {
             _context = context;
         }
-
-        // POST: api/usuario/login
-        [HttpPost("login")]
-        public Usuario Login(LoginRequest data)
-        {
-            var correoElectronico = data.correo_electronico;
-            var contrasena = data.password;
-            var usuario = _context.Usuario.FirstOrDefault(u => u.correo_electronico == correoElectronico);
-
-            if (usuario != null)
-            {
-                if (usuario.password == contrasena)
-                {
-                    return usuario;
-                }
-            }
-            return null;
-        }
-
-        // POST: api/usuario/registro
-
-        [HttpPost("registro")]
-        public async Task<ActionResult<Usuario>> PostUser(Usuario usuario)
-        {
-            if (_context.Usuario == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Usuario'  is null.");
-            }
-            _context.Usuario.Add(usuario);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = usuario.id_usuario }, usuario);
-        }
-
 
         // GET: api/usuario/5
         [HttpGet("{id}")]
@@ -230,16 +199,5 @@ namespace Api.Controllers
 
     }
 
-    public class LoginRequest
-    {
-        public string correo_electronico { get; set; }
-        public string password { get; set; }
-    }
 
-
-    public class FavoritaDto
-    {
-        public int id_pelicula { get; set; }
-        public int id_usuario { get; set; }
-    }
 }
