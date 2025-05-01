@@ -565,3 +565,9 @@
 /home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/System.IdentityModel.Tokens.Jwt.dll
 /home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/System.Security.Permissions.dll
 /home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/System.Windows.Extensions.dll
+/home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/DnsClient.dll
+/home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/MongoDB.Bson.dll
+/home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/MongoDB.Driver.dll
+/home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/SharpCompress.dll
+/home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/Snappier.dll
+/home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/ZstdSharp.dll
