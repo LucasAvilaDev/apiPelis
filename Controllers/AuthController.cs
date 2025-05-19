@@ -49,7 +49,7 @@ public class AuthController : ControllerBase
         {
             new Claim(ClaimTypes.NameIdentifier, usuario.id_usuario.ToString()),
             new Claim(ClaimTypes.Email, usuario.correo_electronico),
-            //new Claim(ClaimTypes.Role, usuario.tipo)
+            new Claim(ClaimTypes.Role, usuario.tipo)
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
