@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using apiPelis.Data;
 using apiPelis.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Api.Controllers
 {
-    [Route("api/categoria")]
+    [Authorize]
     [ApiController]
+    [Route("api/categoria")]
     public class CategoriaController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

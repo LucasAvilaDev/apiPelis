@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using apiPelis.Data;
 using apiPelis.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Api.Controllers
 {
-    [Route("api/pelicula")]
+    [Authorize]
     [ApiController]
+    [Route("api/pelicula")]
     public class PeliculaController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
