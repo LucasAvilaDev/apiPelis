@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,14 +22,19 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginRequest data)
+    public IActionResult Login([FromBody] LoginDto login)
     {
-        var usuario = _context.Usuario.FirstOrDefault(u => u.correo_electronico == data.correo_electronico);
+        var usuario = _context.Usuario.FirstOrDefault(u => u.correo_electronico == login.correo_electronico);
 
-        if (usuario == null || usuario.password != data.password)
-        {
-            return Unauthorized("Credenciales inválidas");
-        }
+            if (usuario == null)
+        return Unauthorized("Credenciales inválidas");
+
+    var hasher = new PasswordHasher<Usuario>();
+
+    var resultado = hasher.VerifyHashedPassword(usuario, usuario.password, login.password);
+
+    if (resultado == PasswordVerificationResult.Failed)
+        return Unauthorized("Credenciales inválidas");
 
         var token = GenerarJwt(usuario);
 
@@ -68,11 +74,20 @@ public class AuthController : ControllerBase
 
 
     // POST: api/auth/registro
-    [HttpPost("registro")]
-    public async Task<ActionResult<Usuario>> Register([FromBody] Usuario usuario)
-    {
-        _context.Usuario.Add(usuario);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(Register), new { id = usuario.id_usuario }, usuario);
-    }
+
+[HttpPost("registro")]
+public async Task<ActionResult<Usuario>> Register([FromBody] Usuario usuario)
+{
+    var hasher = new PasswordHasher<Usuario>();
+
+    string hashedPassword = hasher.HashPassword(usuario, usuario.password);
+    usuario.password = hashedPassword;
+
+    _context.Usuario.Add(usuario);
+    await _context.SaveChangesAsync();
+
+    usuario.password = null; // No exponer la contraseña en la respuesta
+    return CreatedAtAction(nameof(Register), new { id = usuario.id_usuario }, usuario);
+}
+
 }

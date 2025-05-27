@@ -14,7 +14,5 @@ namespace apiPelis.Models
     public string password { get; set; }
     
     public string tipo { get; set; }
-    
-    public string fotoUsuario { get; set; }
-}
+    }
 }
