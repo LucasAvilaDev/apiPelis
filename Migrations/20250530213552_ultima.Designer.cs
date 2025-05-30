@@ -11,8 +11,8 @@ using apiPelis.Data;
 namespace Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250504231202_migracioninicial")]
-    partial class migracioninicial
+    [Migration("20250530213552_ultima")]
+    partial class ultima
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -195,10 +195,6 @@ namespace Api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("fotoUsuario")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("nombre")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -220,7 +216,6 @@ namespace Api.Migrations
                         {
                             id_usuario = 1,
                             correo_electronico = "admin@gmail.com",
-                            fotoUsuario = "string",
                             nombre = "admin",
                             password = "admin",
                             tipo = "admin"

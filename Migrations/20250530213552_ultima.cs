@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Api.Migrations
 {
     /// <inheritdoc />
-    public partial class migracioninicial : Migration
+    public partial class ultima : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -68,8 +68,6 @@ namespace Api.Migrations
                     password = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     tipo = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    fotoUsuario = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -132,8 +130,8 @@ namespace Api.Migrations
 
             migrationBuilder.InsertData(
                 table: "Usuario",
-                columns: new[] { "id_usuario", "correo_electronico", "fotoUsuario", "nombre", "password", "tipo" },
-                values: new object[] { 1, "admin@gmail.com", "string", "admin", "admin", "admin" });
+                columns: new[] { "id_usuario", "correo_electronico", "nombre", "password", "tipo" },
+                values: new object[] { 1, "admin@gmail.com", "admin", "admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_PeliculaUsuario_id_usuario",
