@@ -87,18 +87,17 @@ namespace Api.Controllers
         }
 
         // POST: api/pelicula
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Pelicula>> PostMovie(Pelicula pelicula)
         {
           if (_context.Pelicula == null)
           {
-              return Problem("Entity set 'ApplicationDbContext.Pelicula'  is null.");
+              return Problem();
           }
             _context.Pelicula.Add(pelicula);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMovie", new { id = pelicula.id_pelicula }, pelicula);
+            return CreatedAtAction("peli creada", new { id = pelicula.id_pelicula }, pelicula);
         }
 
         // DELETE: api/pelicula/5
