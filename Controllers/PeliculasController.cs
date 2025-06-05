@@ -97,7 +97,7 @@ namespace Api.Controllers
             _context.Pelicula.Add(pelicula);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("peli creada", new { id = pelicula.id_pelicula }, pelicula);
+            return CreatedAtAction(nameof(GetMovie), new { id = pelicula.id_pelicula }, pelicula);
         }
 
         // DELETE: api/pelicula/5
