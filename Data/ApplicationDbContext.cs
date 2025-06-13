@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using apiPelis.Models;
-using apiPelis.Data;
 
 namespace apiPelis.Data
 {
@@ -21,7 +20,7 @@ namespace apiPelis.Data
             DataSeeder.SeedUsers(modelBuilder);
             DataSeeder.SeedMovies(modelBuilder);
 
-            
+
             modelBuilder.Entity<PeliculaUsuario>()
             .HasKey(pu => new { pu.id_pelicula, pu.id_usuario });
 
@@ -30,6 +29,15 @@ namespace apiPelis.Data
             .WithMany()
             .HasForeignKey(pu => pu.id_pelicula)
             .OnDelete(DeleteBehavior.Cascade);
+
+
+
+            modelBuilder.Entity<PeliculaUsuario>()
+    .HasOne(pu => pu.Usuario)
+    .WithMany()
+    .HasForeignKey(pu => pu.id_usuario)
+    .OnDelete(DeleteBehavior.Cascade); 
         }
     }
+
 }

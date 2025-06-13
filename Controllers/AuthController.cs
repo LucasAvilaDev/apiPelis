@@ -82,6 +82,7 @@ public async Task<ActionResult<Usuario>> Register([FromBody] Usuario usuario)
 
     string hashedPassword = hasher.HashPassword(usuario, usuario.password);
     usuario.password = hashedPassword;
+    usuario.tipo = "cliente";
 
     _context.Usuario.Add(usuario);
     await _context.SaveChangesAsync();
