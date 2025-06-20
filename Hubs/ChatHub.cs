@@ -23,8 +23,19 @@ namespace apiPelis.Hubs
                 Timestamp = DateTime.UtcNow
             };
 
-            // Guardar mensaje en la base de datos
-            await _chatService.GuardarMensaje(chatId, mensaje);
+            // En tu ChatHub.cs, dentro de EnviarMensaje
+            try
+            {
+                Console.WriteLine($"Guardando mensaje en el chat {chatId}: {mensaje.Contenido} de {mensaje.Remitente} a las {mensaje.Timestamp}");
+                await _chatService.GuardarMensaje(chatId, mensaje);
+                Console.WriteLine("Mensaje guardado exitosamente en DB.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ERROR al guardar mensaje en DB: {ex.Message}");
+                // Loggear la excepción completa para más detalles
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
+            }
 
             // Emitir el mensaje a todos los clientes en la sala del chat
             await Clients.Group(chatId).SendAsync("RecibirMensaje", mensaje);
@@ -33,12 +44,16 @@ namespace apiPelis.Hubs
         // Método para que el cliente se una al chat (por ID)
         public async Task UnirseChat(string chatId)
         {
+            Console.WriteLine($"Cliente conectado: {Context.ConnectionId}");
+
             await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
         }
 
         // Método para que el cliente se desconecte del chat
         public async Task DejarChat(string chatId)
         {
+            Console.WriteLine($"Cliente desconectado: {Context.ConnectionId}");
+
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatId);
         }
     }
