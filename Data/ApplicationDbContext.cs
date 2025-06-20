@@ -30,13 +30,11 @@ namespace apiPelis.Data
             .HasForeignKey(pu => pu.id_pelicula)
             .OnDelete(DeleteBehavior.Cascade);
 
-
-
             modelBuilder.Entity<PeliculaUsuario>()
-    .HasOne(pu => pu.Usuario)
-    .WithMany()
-    .HasForeignKey(pu => pu.id_usuario)
-    .OnDelete(DeleteBehavior.Cascade); 
+            .HasOne(pu => pu.Usuario)
+            .WithMany()
+            .HasForeignKey(pu => pu.id_usuario)
+            .OnDelete(DeleteBehavior.Cascade);
         }
     }
 

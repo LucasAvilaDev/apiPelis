@@ -571,3 +571,4 @@
 /home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/SharpCompress.dll
 /home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/Snappier.dll
 /home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/ZstdSharp.dll
+/home/lucas/apiPelis/bin/Debug/net9.0/linux-x64/System.Net.WebSockets.WebSocketProtocol.dll
