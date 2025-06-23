@@ -1,11 +1,16 @@
-using apiPelis.Services;
 using Microsoft.AspNetCore.SignalR;
+using System.Collections.Concurrent;
+using apiPelis.Services;
+using System;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace apiPelis.Hubs
 {
     public class ChatHub : Hub
     {
+        private static readonly ConcurrentDictionary<string, string> userConnectionMap = new();
         private readonly ChatService _chatService;
 
         public ChatHub(ChatService chatService)
@@ -13,8 +18,94 @@ namespace apiPelis.Hubs
             _chatService = chatService;
         }
 
-        // Método para enviar un mensaje
-        public async Task EnviarMensaje(string chatId, string remitente, string contenido)
+        public override async Task OnConnectedAsync()
+        {
+            var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString();
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                userConnectionMap[userId] = Context.ConnectionId;
+                Console.WriteLine($"[Connected] UserId={userId}, ConnectionId={Context.ConnectionId}");
+                await SendActiveUsers();
+            }
+            else
+            {
+                Console.WriteLine($"[Warning] Connection without userId. ConnectionId={Context.ConnectionId}");
+            }
+
+            await base.OnConnectedAsync();
+        }
+
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            var userId = userConnectionMap.FirstOrDefault(x => x.Value == Context.ConnectionId).Key;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                userConnectionMap.TryRemove(userId, out _);
+                Console.WriteLine($"[Disconnected] UserId={userId}, ConnectionId={Context.ConnectionId}");
+            }
+            await SendActiveUsers();
+            await base.OnDisconnectedAsync(exception);
+        }
+
+        public async Task SendMessage(string senderId, string receiverId, string messageContent)
+        {
+            var message = new Mensaje
+            {
+                Remitente = senderId,
+                Contenido = messageContent,
+                Timestamp = DateTime.UtcNow
+            };
+
+            var chatId = string.Join("_", new[] { senderId, receiverId }.OrderBy(id => id));
+
+            await _chatService.GuardarMensaje(chatId, message);
+            Console.WriteLine($"[MongoDB] Message saved for chatId={chatId}");
+
+            var receiverConnectionId = GetConnectionId(receiverId);
+            var senderConnectionId = GetConnectionId(senderId);
+
+            if (!string.IsNullOrEmpty(receiverConnectionId))
+            {
+                await Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage", senderId, messageContent, chatId);
+                Console.WriteLine($"[SignalR] Sent to {receiverId} (Conn: {receiverConnectionId})");
+            }
+
+            if (!string.IsNullOrEmpty(senderConnectionId))
+            {
+                await Clients.Client(senderConnectionId).SendAsync("MessageSentConfirmation", receiverId, messageContent, chatId);
+                Console.WriteLine($"[SignalR] Confirmation to {senderId} (Conn: {senderConnectionId})");
+            }
+        }
+
+        public async Task<List<Mensaje>> GetChatHistory(string chatId)
+        {
+            var messages = await _chatService.ObtenerMensajesDeChat(chatId);
+            Console.WriteLine($"[History] Fetched {messages?.Count ?? 0} messages for chatId={chatId}");
+            return messages;
+        }
+
+        public async Task<List<string>> GetActiveUsers()
+        {
+            var activeUserIds = userConnectionMap.Keys.ToList();
+            Console.WriteLine($"[ActiveUsers] Requested: {string.Join(", ", activeUserIds)}");
+            return await Task.FromResult(activeUserIds);
+        }
+
+        private async Task SendActiveUsers()
+        {
+            var activeUserIds = userConnectionMap.Keys.ToList();
+            await Clients.All.SendAsync("ActiveUsers", activeUserIds);
+            Console.WriteLine($"[Broadcast] Active users: {string.Join(", ", activeUserIds)}");
+        }
+
+        private string GetConnectionId(string userId)
+        {
+            userConnectionMap.TryGetValue(userId, out string connectionId);
+            return connectionId;
+        }
+
+        public async Task EnviarMensajeAGrupo(string chatId, string remitente, string contenido)
         {
             var mensaje = new Mensaje
             {
@@ -23,38 +114,16 @@ namespace apiPelis.Hubs
                 Timestamp = DateTime.UtcNow
             };
 
-            // En tu ChatHub.cs, dentro de EnviarMensaje
-            try
-            {
-                Console.WriteLine($"Guardando mensaje en el chat {chatId}: {mensaje.Contenido} de {mensaje.Remitente} a las {mensaje.Timestamp}");
-                await _chatService.GuardarMensaje(chatId, mensaje);
-                Console.WriteLine("Mensaje guardado exitosamente en DB.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"ERROR al guardar mensaje en DB: {ex.Message}");
-                // Loggear la excepción completa para más detalles
-                Console.WriteLine($"StackTrace: {ex.StackTrace}");
-            }
+            await _chatService.GuardarMensaje(chatId, mensaje);
+            Console.WriteLine($"[Grupo:{chatId}] Guardado y enviado mensaje de {remitente}");
 
-            // Emitir el mensaje a todos los clientes en la sala del chat
-            await Clients.Group(chatId).SendAsync("RecibirMensaje", mensaje);
+            await Clients.Group(chatId).SendAsync("RecibirMensaje", remitente, contenido, chatId);
         }
-
-        // Método para que el cliente se una al chat (por ID)
-        public async Task UnirseChat(string chatId)
+        public async Task UnirseAGrupo(string chatId)
         {
-            Console.WriteLine($"Cliente conectado: {Context.ConnectionId}");
-
             await Groups.AddToGroupAsync(Context.ConnectionId, chatId);
+            Console.WriteLine($"[Grupo:{chatId}] {Context.ConnectionId} se unió");
         }
 
-        // Método para que el cliente se desconecte del chat
-        public async Task DejarChat(string chatId)
-        {
-            Console.WriteLine($"Cliente desconectado: {Context.ConnectionId}");
-
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatId);
-        }
     }
 }

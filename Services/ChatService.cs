@@ -45,5 +45,12 @@ public async Task GuardarMensaje(string chatId, Mensaje mensaje)
         {
             return await _chats.Find(c => c.Id == chatId).FirstOrDefaultAsync();
         }
+
+        public async Task<List<Mensaje>> ObtenerMensajesDeChat(string chatId)
+        {
+            var chat = await _chats.Find(c => c.Id == chatId).FirstOrDefaultAsync();
+            // If chat is found, return its messages. Otherwise, return an empty list.
+            return chat?.Mensajes ?? new List<Mensaje>();
+        }
     }
 }
