@@ -13,8 +13,6 @@ namespace apiPelis.Services
             _chats = database.GetCollection<Chat>("Chats");
         }
 
-
-        // En MongoDbChatService.cs, dentro de GuardarMensaje
 public async Task GuardarMensaje(string chatId, Mensaje mensaje)
 {
     // ...
@@ -37,14 +35,7 @@ public async Task GuardarMensaje(string chatId, Mensaje mensaje)
     {
         Console.WriteLine($"Mensaje añadido al chat existente '{chatId}'.");
     }
-    // ...
 }
-
-        // Método para obtener un chat por su ID
-        public async Task<Chat> ObtenerChatPorId(string chatId)
-        {
-            return await _chats.Find(c => c.Id == chatId).FirstOrDefaultAsync();
-        }
 
         public async Task<List<Mensaje>> ObtenerMensajesDeChat(string chatId)
         {
