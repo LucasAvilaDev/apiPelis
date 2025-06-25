@@ -15,27 +15,35 @@ namespace apiPelis.Data
         public DbSet<PeliculaUsuario> PeliculaUsuario { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            DataSeeder.SeedCategories(modelBuilder);
-            DataSeeder.SeedUsers(modelBuilder);
-            DataSeeder.SeedMovies(modelBuilder);
+{
+    DataSeeder.SeedCategories(modelBuilder);
+    DataSeeder.SeedUsers(modelBuilder);
+    DataSeeder.SeedMovies(modelBuilder);
 
+    // Relación PeliculaUsuario (muchos a muchos)
+    modelBuilder.Entity<PeliculaUsuario>()
+        .HasKey(pu => new { pu.id_pelicula, pu.id_usuario });
 
-            modelBuilder.Entity<PeliculaUsuario>()
-            .HasKey(pu => new { pu.id_pelicula, pu.id_usuario });
+    modelBuilder.Entity<PeliculaUsuario>()
+        .HasOne(pu => pu.Pelicula)
+        .WithMany()
+        .HasForeignKey(pu => pu.id_pelicula)
+        .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<PeliculaUsuario>()
-            .HasOne(pu => pu.Pelicula)
-            .WithMany()
-            .HasForeignKey(pu => pu.id_pelicula)
-            .OnDelete(DeleteBehavior.Cascade);
+    modelBuilder.Entity<PeliculaUsuario>()
+        .HasOne(pu => pu.Usuario)
+        .WithMany()
+        .HasForeignKey(pu => pu.id_usuario)
+        .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<PeliculaUsuario>()
-            .HasOne(pu => pu.Usuario)
-            .WithMany()
-            .HasForeignKey(pu => pu.id_usuario)
-            .OnDelete(DeleteBehavior.Cascade);
-        }
+    // ✅ Relación Pelicula → Categoria
+    modelBuilder.Entity<Pelicula>()
+        .HasOne(p => p.Categoria)
+        .WithMany()
+        .HasForeignKey(p => p.id_categoria)
+        .OnDelete(DeleteBehavior.Cascade); // o Cascade, según tu lógica
+}
+
     }
 
 }
