@@ -26,15 +26,15 @@ public class AuthController : ControllerBase
     {
         var usuario = _context.Usuario.FirstOrDefault(u => u.correo_electronico == login.correo_electronico);
 
-            if (usuario == null)
-        return Unauthorized("Credenciales inválidas");
+        if (usuario == null)
+            return Unauthorized("Credenciales inválidas");
 
-    var hasher = new PasswordHasher<Usuario>();
+        var hasher = new PasswordHasher<Usuario>();
 
-    var resultado = hasher.VerifyHashedPassword(usuario, usuario.password, login.password);
+        var resultado = hasher.VerifyHashedPassword(usuario, usuario.password, login.password);
 
-    if (resultado == PasswordVerificationResult.Failed)
-        return Unauthorized("Credenciales inválidas");
+        if (resultado == PasswordVerificationResult.Failed)
+            return Unauthorized("Credenciales inválidas");
 
         var token = GenerarJwt(usuario);
 
@@ -75,20 +75,20 @@ public class AuthController : ControllerBase
 
     // POST: api/auth/registro
 
-[HttpPost("registro")]
-public async Task<ActionResult<Usuario>> Register([FromBody] Usuario usuario)
-{
-    var hasher = new PasswordHasher<Usuario>();
+    [HttpPost("registro")]
+    public async Task<ActionResult<Usuario>> Register([FromBody] Usuario usuario)
+    {
+        var hasher = new PasswordHasher<Usuario>();
 
-    string hashedPassword = hasher.HashPassword(usuario, usuario.password);
-    usuario.password = hashedPassword;
-    usuario.tipo = "cliente";
+        string hashedPassword = hasher.HashPassword(usuario, usuario.password);
+        usuario.password = hashedPassword;
+        usuario.tipo = "cliente";
 
-    _context.Usuario.Add(usuario);
-    await _context.SaveChangesAsync();
+        _context.Usuario.Add(usuario);
+        await _context.SaveChangesAsync();
 
-    usuario.password = null; // No exponer la contraseña en la respuesta
-    return CreatedAtAction(nameof(Register), new { id = usuario.id_usuario }, usuario);
-}
+        usuario.password = "";
+        return CreatedAtAction(nameof(Register), new { id = usuario.id_usuario }, usuario);
+    }
 
 }
