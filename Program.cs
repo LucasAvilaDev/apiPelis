@@ -54,13 +54,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          // *** AQUÍ ESTÁ EL CAMBIO CLAVE ***
-                          // Debes especificar el ORIGEN EXACTO de tu frontend Angular.
-                          // No uses un wildcard "*" si también estás usando AllowCredentials().
-                          policy.WithOrigins("http://localhost:4200") // <-- ¡IMPORTANTE!
+                          policy.WithOrigins("http://localhost:4200")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
-                                .AllowCredentials(); // <-- Necesario para SignalR
+                                .AllowCredentials();
                       });
 });
 
@@ -75,11 +72,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(MyAllowSpecificOrigins); // Aplicar la política definida
+app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapHub<ChatHub>("/chatHub"); 
+app.MapHub<ChatHub>("/chatHub");
+
+
 app.MapControllers();
 
 
