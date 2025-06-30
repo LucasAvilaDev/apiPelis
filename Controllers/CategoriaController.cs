@@ -28,11 +28,25 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria()
         {
-          if (_context.Categoria == null)
-          {
-              return NotFound();
-          }
+            if (_context.Categoria == null)
+            {
+                return NotFound();
+            }
             return await _context.Categoria.ToListAsync();
         }
+        
+        // GET: api/Categoria/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Categoria>> GetCategoriaById(int id)
+            {
+                var categoria = await _context.Categoria.FindAsync(id);
+
+                if (categoria == null)
+                {
+                    return NotFound();
+                }
+
+                return categoria;
+            }
     }
 }
